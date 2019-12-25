@@ -22,6 +22,7 @@ open class LightboxImage {
   }
 
   public init(imageURL: URL, text: String = "", videoURL: URL? = nil) {
+    print("Test change init from url: \(imageURL)")
     self.imageURL = imageURL
     self.text = text
     self.videoURL = videoURL
