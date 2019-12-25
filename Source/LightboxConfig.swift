@@ -21,7 +21,19 @@ public class LightboxConfig {
   public static var loadImage: (UIImageView, URL, ((UIImage?) -> Void)?) -> Void = { (imageView, imageURL, completion) in
 
     // Use Imaginary by default
-    imageView.setImage(url: imageURL, placeholder: nil, completion: { result in
+    
+    var option = Option()
+    option.downloaderMaker = {
+      return ImageDownloader(modifyRequest: {
+        var request = $0
+        let token = UserDefaults.standard.string(forKey: "token") ?? ""
+        print("Use auth token")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+      })
+    }
+    
+    imageView.setImage(url: imageURL, placeholder: nil, option: option, completion: { result in
       switch result {
       case .value(let image):
         completion?(image)
